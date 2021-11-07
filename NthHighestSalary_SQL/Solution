@@ -1,0 +1,27 @@
+CREATE FUNCTION getNthHighestSalary(@N INT) RETURNS INT AS
+BEGIN
+DECLARE @Salary INT
+
+;WITH CTE AS (
+SELECT distinct Salary
+FROM Employee
+)
+,CTE2 AS (
+SELECT
+    --numbering salaries from highest to lowest
+    ROW_NUMBER() OVER(ORDER BY Salary desc) rn
+    ,Salary
+FROM CTE
+)
+SELECT 
+    --if the inputed N is larger than the number of salaries, return null
+    @Salary = CASE WHEN @N > count(*) THEN NULL
+    --otherwise simply return the salary associated with the row number n
+                ELSE (SELECT Salary FROM CTE2 WHERE rn = @N) END 
+FROM CTE2 
+
+    RETURN (  
+      @Salary
+    );
+END
+

@@ -1,0 +1,24 @@
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        ##getting a merged and sorted list
+        mergelist=(nums1+nums2)
+        ##print(mergelist)
+        smergelist = sorted(mergelist)
+        ##print(smergelist)
+        
+        ##identifying if even or odd
+        
+        l=len(smergelist)
+        print(l,smergelist,int(l/2.0),int(l/2.0+1))
+        #even length list
+        if l==1:
+            return(smergelist[0])
+        if l%2==0:
+            print(smergelist[int(l/2.0-1)],smergelist[int(l/2.0)])
+            ##because python index starts from 0, we have to go one index back
+            return((smergelist[int(l/2.0-1)]+smergelist[int(l/2.0)])/2)
+            
+       #odd length list
+        else:
+            return(smergelist[int(l/2.0)])
+        

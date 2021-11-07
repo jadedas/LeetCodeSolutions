@@ -1,0 +1,23 @@
+WITH CTE AS (
+select 
+    --flagging consecutive numbers that are not the same
+    CASE WHEN lag(Num) OVER(Order by id)<>Num THEN 1 else 0 END flag
+    ,num
+    ,id
+FROM  Logs
+)
+,CTE2 AS(
+SELECT
+    --calculating the cumulative sum of flags to create an ID
+    --for groups of consecutive numbers that are the same
+    SUM(flag) OVER(Order by id) groupid
+    ,num
+FROM CTE
+)
+--group by the groupid and return the numbers that appear at
+--least three times
+select 
+    distinct num as ConsecutiveNums
+from cte2
+group by groupid,num
+having count(*)>2
